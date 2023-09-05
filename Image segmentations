@@ -1,0 +1,23 @@
+hc = imread("honeycomb.jpg");
+imshow(hc)
+
+hcGS = im2gray(hc);
+uncapped = hcGS < 125;
+capped = hcGS > 200;
+imshowpair(uncapped,capped,"montage")
+
+uncapped = bwareaopen(uncapped,50);
+imshow(uncapped)
+SE = strel("disk",3);
+uncapped = imopen(uncapped,SE);
+imshow(uncapped)
+
+W = gradientweight(hcGS,"RolloffFactor",3.8);
+imshow(W)
+
+SE = strel("disk",2);
+W = imopen(W,SE);
+imshow(W)
+
+capped = imsegfmm(W,capped,0.2);
+imshow(capped)
